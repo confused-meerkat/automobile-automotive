@@ -1,0 +1,24 @@
+/* Minimal globals. Everything the landing page needs lives in its CSS module,
+   so the page can be dropped into the main gembaconcepts.com codebase as is. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: #000000;
+  color: #ffffff;
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+}
