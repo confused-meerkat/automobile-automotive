@@ -1,23 +1,19 @@
-import Image from "next/image";
-import type { CSSProperties } from "react";
-import { Activity, BatteryCharging, Check, Clock, Factory, Plus, Truck } from "lucide-react";
+import { Activity, BatteryCharging, Check, Factory, Plus, Truck } from "lucide-react";
 import styles from "./landing.module.css";
 import ThemeShell from "./ThemeShell";
 import SiteHeader from "./SiteHeader";
+import SiteFooter from "./SiteFooter";
 import HeroGrid from "./HeroGrid";
 import ObsidianCard from "./ObsidianCard";
 import LeadForm from "./LeadForm";
 import TestimonialCarousel from "./TestimonialCarousel";
-import FooterContact from "./FooterContact";
+import SopGate from "./sop-check/SopGate";
 import { MarqueeLogo } from "./LogoImage";
 import Accent from "./Accent";
 import {
   approach,
-  assessment,
-  config,
   faq,
   finalCta,
-  footer,
   form,
   gains,
   growth,
@@ -29,11 +25,8 @@ import {
 } from "./content";
 
 const GROWTH_ICONS = { factory: Factory, battery: BatteryCharging, truck: Truck, activity: Activity } as const;
-const FACT_ICONS = [Clock, Check, Factory];
 
 export default function AutomotiveLanding() {
-  const progress = `${(assessment.currentStation / (assessment.stations.length - 1)) * 83.34}%`;
-
   return (
     <ThemeShell>
       <SiteHeader />
@@ -131,76 +124,10 @@ export default function AutomotiveLanding() {
           </div>
         </section>
 
-        {/* Assessment tool */}
+        {/* Interactive tool: EV Plant SOP Readiness Check, gated by the contact form */}
         <section id="assessment" style={{ background: "var(--surface-subtle)" }} aria-labelledby="assess-title">
           <div className={`${styles.wrap} ${styles.section}`}>
-            <div className={`${styles.grid} ${styles.assessGrid}`}>
-              <div className={styles.assessL}>
-                <span className={styles.chip}>{assessment.chip}</span>
-                <h2 id="assess-title" className={styles.h2}>
-                  <Accent h={assessment.title} />
-                </h2>
-                <p className={styles.subMuted}>{assessment.body}</p>
-                <div className={styles.facts}>
-                  {assessment.facts.map((f, i) => {
-                    const Icon = FACT_ICONS[i] ?? Check;
-                    return (
-                      <span key={f}>
-                        <Icon aria-hidden />
-                        {f}
-                      </span>
-                    );
-                  })}
-                </div>
-                <a className={`${styles.btn} ${styles.btnPrimary} ${styles.assessBtn}`} href={config.assessmentUrl}>
-                  {assessment.button}
-                </a>
-              </div>
-              <div className={styles.assessR}>
-                <ObsidianCard sweepDelay="0.4s" aria-label="Example of the assessment">
-                  <div className={styles.pvTop}>
-                    <p className={styles.pvTag}>{assessment.previewLabel}</p>
-                    <p className={styles.pvTag}>Example</p>
-                  </div>
-                  <div className={styles.stations} style={{ "--progress": progress } as CSSProperties}>
-                    {assessment.stations.map((s, i) => (
-                      <div
-                        key={s}
-                        className={[
-                          styles.station,
-                          i < assessment.currentStation ? styles.stationDone : "",
-                          i === assessment.currentStation ? styles.stationNow : "",
-                        ].join(" ")}
-                      >
-                        <b>{i + 1}</b>
-                        <span>{s}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className={styles.stationCaption}>
-                    Area {assessment.currentStation + 1} of {assessment.stations.length} · {assessment.stations[assessment.currentStation]}
-                  </p>
-                  <div className={styles.bars}>
-                    {assessment.exampleBars.map((b) => (
-                      <div key={b.label} className={styles.bar}>
-                        <i style={{ "--v": `${b.inPlace}%` } as CSSProperties} aria-hidden="true" />
-                        <span>{b.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className={styles.legend}>
-                    <em>
-                      <i className={styles.legendIn} />
-                      In place today
-                    </em>
-                    <em>
-                      <i className={styles.legendUp} />
-                      Upside available
-                    </em>
-                  </div>
-                </ObsidianCard>
-              </div>
-            </div>
+            <SopGate variant="section" />
           </div>
         </section>
 
@@ -376,17 +303,7 @@ export default function AutomotiveLanding() {
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <div className={`${styles.wrap} ${styles.foot}`}>
-          <div className={styles.footLeft}>
-            <span className={styles.footLogo}>
-              <Image src="/images/logo-v1-full.png" alt="Gemba Concepts" width={480} height={319} sizes="72px" />
-            </span>
-            <p className={styles.footCopy}>{footer.copyright}</p>
-          </div>
-          <FooterContact />
-        </div>
-      </footer>
+      <SiteFooter />
     </ThemeShell>
   );
 }

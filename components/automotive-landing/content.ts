@@ -9,9 +9,9 @@
 export const config = {
   siteUrl: "https://gembaconcepts.com",
   pagePath: "/automotive-manufacturing-consulting-services",
-  /** TODO before go-live: the live URL of the Plant Opportunity Assessment tool. */
-  assessmentUrl: "#assessment",
-  /** Both lead forms POST here. app/api/leads/route.ts is a stub to wire to the CRM. */
+  /** The gated EV Plant SOP Readiness Check. The #assessment section on the landing page is its gate. */
+  toolPath: "/automotive-manufacturing-consulting-services/sop-readiness-check",
+  /** Every lead form POSTs here, the tool's results too. app/api/leads/route.ts is a stub to wire to the CRM. */
   leadEndpoint: "/api/leads",
   email: "marketing@gembaconcepts.com",
   whatsappUrl:
@@ -111,25 +111,30 @@ export const gains = {
   ] as { title: Headline; see: string; doo: string; note?: string; result: string }[],
 };
 
-export const assessment = {
-  chip: "Free 5-Minute Tool",
-  title: { lead: "Not Sure Where to Start? Don't Guess.", accent: "Score Your Plant." } as Headline,
+/** EV Plant SOP Readiness Check: the gated tool. Activity copy lives in sop-check/data.ts. */
+export const sopCheck = {
+  name: "EV Plant SOP Readiness Check",
+  seoTitle: "EV Plant SOP Readiness Check | Gemba Concepts",
+  seoDescription:
+    "A free 6-minute check for EV and automotive plant projects. Mark the 25 activities from layout to start of production, see your readiness by stage, the activities that still need an owner, and a draft responsibility map.",
+  chip: "Free tool · EV and automotive plants",
+  title: { lead: "How ready is your EV plant for", accent: "start of production?" } as Headline,
   body:
-    "Answer 12 quick questions across the same six areas. You'll see where your plant is already strong, your top three opportunities and, if you add a few numbers, the extra output your existing lines can give.",
-  facts: ["About 5 minutes", "No login", "Built for automotive"],
-  button: "Take the 5-Minute Plant Assessment",
-  previewLabel: "Plant Opportunity Assessment",
-  /** Illustration only. Shown with an "Example" tag. */
-  stations: ["Line flow", "Uptime", "Changeovers", "Quality", "Material", "People"],
-  currentStation: 3,
-  exampleBars: [
-    { label: "Flow", inPlace: 72 },
-    { label: "Uptime", inPlace: 45 },
-    { label: "Change", inPlace: 28 },
-    { label: "Quality", inPlace: 58 },
-    { label: "Material", inPlace: 36 },
-    { label: "People", inPlace: 64 },
+    "Go through the 25 activities between layout and SOP. Mark where each one stands and who owns it. You will see your readiness by stage, the activities that still need an owner, and a draft responsibility map to share with your team.",
+  facts: [
+    { title: "About 6 minutes", sub: "No login, nothing to prepare" },
+    { title: "25 activities, 6 stages", sub: "From layout to start of production" },
+    { title: "Built for EV and automotive", sub: "Battery, motor, MCU and vehicle assembly" },
   ],
+  sopNote: "In this tool, SOP means start of production. Standard operating procedures are called standard work.",
+  trust: "Built by Gemba Concepts. Trusted by 500+ manufacturers across three continents, with 12+ years of shop-floor execution.",
+  /** The contact gate in front of the tool. Same fields as the other forms. */
+  gateTitle: "Get free access to the readiness check",
+  gateBody: "Share your details to open the tool. Your results and responsibility map come to you by email, and a consultant can walk you through them.",
+  gateButton: "Unlock the Readiness Check",
+  unlockedTitle: "Your readiness check is unlocked",
+  unlockedBody: "Pick up where you left off. Your answers stay saved in this browser.",
+  unlockedButton: "Open the Readiness Check",
 };
 
 export const results = {

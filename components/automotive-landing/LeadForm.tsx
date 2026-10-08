@@ -3,6 +3,7 @@
 import { useId, useState, type FormEvent } from "react";
 import styles from "./landing.module.css";
 import { config, form as copy } from "./content";
+import { saveUnlock } from "./sop-check/logic";
 
 type Field = "fullname" | "email" | "company" | "designation" | "phone" | "size";
 type Errors = Partial<Record<Field, string>>;
@@ -18,7 +19,15 @@ const RULES: Record<Field, (v: string) => string> = {
 
 const TRACKING_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid", "li_fat_id", "fbclid"];
 
-export default function LeadForm({ placement, buttonLabel }: { placement: "hero" | "book"; buttonLabel: string }) {
+type Props = {
+  placement: "hero" | "book" | "tool";
+  buttonLabel: string;
+  ariaLabel?: string;
+  /** Called after a successful submit instead of showing the thank-you note (used by the tool gate). */
+  onDone?: (u: { lead: Record<string, string>; tracking: Record<string, string> }) => void;
+};
+
+export default function LeadForm({ placement, buttonLabel, ariaLabel = "Book a free shopfloor consultation", onDone }: Props) {
   const uid = useId();
   const id = (name: string) => `${placement}-${name}-${uid}`;
   const [errors, setErrors] = useState<Errors>({});
@@ -65,6 +74,12 @@ export default function LeadForm({ placement, buttonLabel }: { placement: "hero"
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
+      // Anyone who has shared their details can open the gated readiness check.
+      saveUnlock({ lead, tracking });
+      if (onDone) {
+        onDone({ lead, tracking });
+        return;
+      }
       setFirstName((data.fullname || "").split(" ")[0]);
       setStatus("done");
     } catch {
@@ -88,14 +103,14 @@ export default function LeadForm({ placement, buttonLabel }: { placement: "hero"
         <h3>Thank you{firstName ? `, ${firstName}` : ""}.</h3>
         <p>A senior consultant will call you within 24 hours to talk about your plant.</p>
         <p>
-          While you wait, <a href={config.assessmentUrl}>take the 5-minute Plant Assessment</a> so we come to the call ready.
+          While you wait, <a href={config.toolPath}>take the 6-minute EV Plant SOP Readiness Check</a> so we come to the call ready.
         </p>
       </div>
     );
   }
 
   return (
-    <form noValidate onSubmit={onSubmit} aria-label="Book a free shopfloor consultation">
+    <form noValidate onSubmit={onSubmit} aria-label={ariaLabel}>
       <div className={styles.honeypot} aria-hidden="true">
         <label htmlFor={id("website")}>Website</label>
         <input id={id("website")} name="website" tabIndex={-1} autoComplete="off" />

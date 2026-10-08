@@ -6,13 +6,14 @@ import styles from "./landing.module.css";
 import { nav } from "./content";
 import { useLandingTheme } from "./ThemeShell";
 
-export default function SiteHeader() {
+/** On the landing page the links stay in-page; other pages (the readiness check) point back to it. */
+export default function SiteHeader({ homeHref = "#top", ctaHref = "#book" }: { homeHref?: string; ctaHref?: string }) {
   const { theme, setTheme } = useLandingTheme();
   return (
     <header className={styles.top}>
       <div className={styles.wrap}>
         <div className={styles.nav}>
-          <a href="#top" className={styles.logoLink} aria-label="Gemba Concepts home">
+          <a href={homeHref} className={styles.logoLink} aria-label="Gemba Concepts home">
             <Image
               src="/images/logo-v1-full.png"
               alt="Gemba Concepts"
@@ -33,7 +34,7 @@ export default function SiteHeader() {
               <Moon size={16} strokeWidth={2} aria-hidden />
             </button>
           </div>
-          <a className={styles.navBtn} href="#book">
+          <a className={styles.navBtn} href={ctaHref}>
             <span className={styles.navShort}>{nav.ctaShort}</span>
             <span className={styles.navLong}>{nav.cta}</span>
           </a>
